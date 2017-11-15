@@ -7,6 +7,9 @@
       "main": true
     },
     "main.css": {
+      "vendor": [
+        "components-font-awesome"
+      ],
       "files": [
         "styles/main.scss"
       ],

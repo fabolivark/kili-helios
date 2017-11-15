@@ -1,0 +1,25 @@
+{% if reply.comment_approved %}
+  <div id="comment-{{reply.ID}}" class="article-comment{{currentDepth % 2 == 0 ? '' : ' article-comment--reply'}} comment-{{reply.ID}} comment-order-{{loop.index}}">
+    <h6 class="comment-author">{{reply.author.name}}</h6>
+    <div class="comment-content">{{reply.comment_content|wpautop}}</div>
+    {% if currentDepth <= commentReplyArgs.max_depth %}
+      {% if is_user_logged_in and post.comment_status == 'open' %}<div><a href="#" class="js-show-comment-form" data-id="{{reply.ID}}" data-class="comment-form--hidden">{{__('Reply','ksource')}}</a></div>{% endif %}
+      {% if reply.children %}
+        {% set currentDepth = currentDepth + 1 %}
+        {% for child in reply.children %}
+          {% include 'partials/comment-children.twig' with {reply:child, currentDepth:currentDepth} %}
+        {% endfor %}
+      {% endif %}
+    {% endif %}
+    {% if currentDepth <= commentReplyArgs.max_depth %}
+      {% include 'partials/comment-form.twig' with {comment:reply, identifier:reply.ID, hideClass:'comment-form--hidden'} %}
+    {% endif %}
+  </div>
+{% elseif is_user_logged_in %}
+  <div id="comment-{{reply.ID}}" class="article-comment{{currentDepth % 2 == 0 ? '' : ' article-comment--reply'}} comment-{{reply.ID}} comment-order-{{loop.index}}">
+    <h6 class="comment-author">{{reply.author.name}}</h6>
+    <div class="comment-content">
+      {{__('Your comment is awaiting moderation.', 'ksource')}}
+    </div>
+  </div>
+{% endif %}

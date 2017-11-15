@@ -1,0 +1,59 @@
+{% extends "layouts/base.twig" %}
+{% block header %}{% include 'partials/blog-hero.twig' with {banner_title: theme_mods.ksource_blog_home_title, banner_subtitle: theme_mods.ksource_blog_home_subtitle}%}{% endblock %}
+{% block content %}
+  <div class="article__cream-container">
+    <div class="container">
+      <div>
+        <span class="gamma text--brand capitalize">
+          {{current_archive}}
+        </span>
+        <span>
+          {{ (( posts_length > 0 ? current_offset : 0 )) ~ ' - ' ~ current_offset_right ~ ' of ' ~ pluralize}}
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="main-container">
+    <div class="container">
+      <div class="grid">
+        <div class="grid__item medium--two-thirds">
+          <section>
+            {% for post in posts %}
+              <article class="article-excerpt article-excerpt--{{post.post_type}}" id="article-{{post.ID}}">
+                <small class="display-block">{{post.post_date|date('F j, Y')}} in
+                  {% for item in post.categories %}
+                    <a href="{{item.link}}">{{item.name}}</a>
+                  {% endfor %}
+                </small>
+                <h1 class="beta">
+                  <a href="{{post.link}}" class="article-excerpt__title-link">{{post.title}}</a>
+                </h1>
+                <div class="article-excerpt__content">
+                  {% if protected[loop.index0] %}
+                    <div class="password-form">
+                      <label class="password-form__label">
+                        <span class="bold">{{  __('This is a protected area.', 'ksource') }}</span> {{ __('Please enter your password', 'ksource') }} <a href="{{post.link}}"> {{ __('here', 'ksource') }} </a> {{ __('to continue', 'ksource') }}
+                      </label>
+                    </div>
+                  {% else %}
+                    {{post.post_excerpt ? post.post_excerpt : (post.content)}}
+                    <div class="push--top">
+                      <a class="article-excerpt__permalink" href="{{post.link}}"><span class="icon icon--link"></span>{{ __('Permalink', 'ksource') }}</a>
+                    </div>
+                  {% endif %}
+                </div>
+              </article>
+            {% endfor %}
+            {% include 'partials/pagination.twig' %}
+          </section>
+        </div><!--
+         --><div class="grid__item medium--one-third">
+          <aside class="aside-nav">
+            {% include "partials/sidebar.twig" %}
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block footer %}{% include 'partials/footer.twig' %}{% endblock %}

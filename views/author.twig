@@ -1,0 +1,79 @@
+{% extends "layouts/base.twig" %}
+{% block header %}{% include 'partials/blog-hero.twig' with {banner_title: theme_mods.ksource_blog_home_title, banner_subtitle: theme_mods.ksource_blog_home_subtitle}%}{% endblock %}
+{% block content %}
+  <div class="article__cream-container">
+    <div class="container">
+      <div class="article-author push--bottom">
+        <div class="push--bottom">
+          <span class="article-author__photo push-half--right" style="background-image: url({{author.avatar.abs_url}});"></span>
+          <div class="display-inline-block vertical-align--middle">
+            <div class="text--larger capitalize">{{ author.name ? author.name : author.nickname }}</div>
+            <div class="article-author__job-title">{{author.job_title}}</div>
+          </div>
+          <div class="float--end">
+            {% if author.linkedin %}
+              <a href="{{author.linkedin}}" class="article-author__social-icon" target="_blank">
+                <span class="icon icon--linkedin"></span>
+              </a>
+            {% endif %}
+            {% if author.twitter %}
+              <a href="{{author.twitter}}" class="article-author__social-icon" target="_blank">
+                <span class="icon icon--twitter"></span>
+              </a>
+            {% endif %}
+          </div>
+        </div>
+        <p class="flush">{{author.description}}</p>
+      </div>
+      <div>
+        <span class="gamma text--brand">
+          All posts from <span class="capitalize">{{author.name ? author.name : author.nickname}}</span>
+        </span>
+        <span>
+          {{ ((current_offset - posts_length) + 1) ~ ' - ' ~ current_offset ~ ' of ' ~ pluralize}} 
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="main-container">
+    <div class="container">
+      <section>
+        <div id="grid" class="clearfix" data-columns>
+          {% for post in posts %}<div class="soft-half">
+              <article class="article-excerpt article-excerpt--{{post.post_type}} soft--bottom push--bottom" id="article-{{post.ID}}">
+                <small class="display-block">{{post.post_date|date('F j, Y')}} in 
+                  {% for item in post.categories %}
+                    <a href="{{item.link}}">{{item.name}}</a>
+                  {% endfor %}
+                </small>
+                <h1 class="gamma">
+                  <a href="{{post.link}}" target="_blank" class="article-excerpt__title-link">{{post.title}}</a>
+                </h1>
+                <div class="article-excerpt__content">
+                  {% if protected[loop.index0] %}
+                    <div class="password-form">
+                      <label class="password-form__label">
+                        <span class="bold">{{  __('This is a protected area.', 'ksource') }}</span> {{ __('Please enter your password', 'ksource') }} <a href="{{post.link}}"> {{ __('here', 'ksource') }} </a> {{ __('to continue', 'ksource') }}
+                      </label>
+                    </div>
+                  {% elseif post.post_excerpt %}
+                      <div class="push-half--bottom">
+                        {{post.post_excerpt}}
+                      </div>
+                      <a href="{{post.link}}">{{ __('Read More', 'ksource') }}</a>
+                  {% else %}
+                    <div class="push-half--bottom">
+                      {{post.content|excerpt(20)}}
+                    </div>
+                    <a href="{{post.link}}">{{ __('Read More', 'ksource') }}</a>
+                  {% endif %}
+                </div>
+              </article>
+            </div>{% endfor %}
+        </div>
+        {% include 'partials/pagination.twig' %}
+      </section>
+    </div>
+  </div>
+{% endblock %}
+{% block footer %}{% include 'partials/footer.twig' %}{% endblock %}

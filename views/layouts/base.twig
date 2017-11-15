@@ -1,0 +1,29 @@
+<!doctype html>
+<html class="no-js" {{site.language_attributes}}>
+  <head>
+    <meta charset="{{site.charset}}" />
+    <title>{{ wp_title ? wp_title ~ ' - '}}{{ site.name }}</title>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="description" content="{{site.description}}">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script>document.querySelector('html').classList.remove('no-js');</script>
+    <link rel="pingback" href="{{site.pingback_url}}" />
+    {{function('wp_head')}}
+    {% block head %}
+    {% endblock %}
+  </head>
+  <body class="{{body_class}}">
+    <main class="main-content">
+      <h1 class="sr-only">{{ wp_title ? wp_title ~ ' - '}}{{ site.name }}</h1>
+      {% block header %}
+      {% endblock %}
+      {% block content %}
+        Sorry, no content
+      {% endblock %}
+    </main>
+    {% block footer %}
+    {% endblock %}
+     {{function('wp_footer')}}
+  </body>
+</html>
