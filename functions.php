@@ -6,11 +6,13 @@ if( ! class_exists( 'Helios' ) ) :
 	/**
 	* Child theme principal Class
 	*/
+
 	class Helios {
+
 
 		function __construct() {
 
-			// Theme setup
+      		// Theme setup
       		$this->theme_setup();
 
 			// Adding actions
@@ -18,10 +20,23 @@ if( ! class_exists( 'Helios' ) ) :
 
 		}
 
+		public function theme_context( $context = null ) {
+			global $kili_framework;
+
+			$context['html5shiv'] = $kili_framework->asset_path( 'scripts/html5shiv.js' );
+			$context['respond'] = $kili_framework->asset_path( 'scripts/respond.min.js' );
+			$context['ie8css'] = $kili_framework->asset_path( 'styles/ie8.css' );
+
+			return $context;
+		}
+
 		public function theme_setup() {
 			global $kili_framework;
-			$kili_framework->render_pages();
-
+			register_nav_menus( array(
+				'primary_navigation' => __( 'Primary Navigation', 'helios' ),
+				'footer_navigation' => __( 'Footer Navigation', 'helios' ),
+			) );
+			$kili_framework->render_pages( $this->theme_context() );
 		}
 		public function add_actions() {
 			if (!is_admin()) {

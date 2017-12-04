@@ -11,8 +11,8 @@
   ],
   "private": true,
   "dependencies": {
-    "normalize-css": "^4.2.0",
-    "components-font-awesome": "^4.7.0"
+    "components-font-awesome": "^4.7.0",
+    "skel": "^3.0.1"
   },
   "overrides": {}
 }

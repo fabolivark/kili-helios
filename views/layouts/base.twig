@@ -1,29 +1,24 @@
-<!doctype html>
+<!DOCTYPE HTML>
 <html class="no-js" {{site.language_attributes}}>
   <head>
-    <meta charset="{{site.charset}}" />
     <title>{{ wp_title ? wp_title ~ ' - '}}{{ site.name }}</title>
-    <meta name="format-detection" content="telephone=no">
     <meta name="description" content="{{site.description}}">
+    <meta name="format-detection" content="telephone=no">
+    <meta charset="{{site.charset}}" />
     <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script>document.querySelector('html').classList.remove('no-js');</script>
-    <link rel="pingback" href="{{site.pingback_url}}" />
+    <!--[if lte IE 8]><script src="{{html5shiv}}"></script><![endif]-->
     {{function('wp_head')}}
-    {% block head %}
-    {% endblock %}
+    <!--[if lte IE 8]><link rel="stylesheet" href="{{ie8css}}" /><![endif]-->
   </head>
   <body class="{{body_class}}">
-    <main class="main-content">
-      <h1 class="sr-only">{{ wp_title ? wp_title ~ ' - '}}{{ site.name }}</h1>
-      {% block header %}
-      {% endblock %}
-      {% block content %}
-        Sorry, no content
-      {% endblock %}
-    </main>
-    {% block footer %}
-    {% endblock %}
-     {{function('wp_footer')}}
+    <div id="page-wrapper">
+       {% block header %}{{__('Sorry, no content yet', 'helios')}}{% endblock %}
+       {% block content %}{{__('Sorry, no content yet', 'helios')}}{% endblock %}
+        {% include 'shared/footer.twig'%}
+    </div>
+      <!--[if lte IE 8]><script src="{{respond}}"></script><![endif]-->
+      {{function('wp_footer')}}
+
   </body>
 </html>

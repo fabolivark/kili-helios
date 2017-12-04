@@ -1,0 +1,10 @@
+<nav id="nav">
+  <ul>
+    {% for item in menu.primary.get_items %}
+      <li class="menu-item {% if 'current-page-ancestor' in item.classes or 'current-menu-item' in item.classes or 'current_page_parent' in item.classes %} active{% endif %}">
+        <a href="{{item.link}}">{{item.title}}</a>
+        {% include 'shared/navigation-children.twig' with {item: item} %}
+      </li>
+    {% endfor %}
+  </ul>
+</nav>

@@ -92,6 +92,9 @@ var cssTasks = function(filename) {
       return gulpif(enabled.maps, sourcemaps.init());
     })
     .pipe(function() {
+      return gulpif('*.less', less());
+    })
+    .pipe(function() {
       return gulpif('*.scss', sass({
         outputStyle: 'nested', // libsass doesn't support expanded yet
         precision: 10,
@@ -171,12 +174,7 @@ var writeToManifest = function(directory) {
 // raised. If the `--production` flag is set: this task will fail outright.
 gulp.task('styles', ['wiredep'], function() {
   var merged = merge();
-  var excluded = ['admin-style.css'];
   manifest.forEachDependency('css', function(dep) {
-    var dep_temp = dep;
-    if (excluded.indexOf(dep.name) > -1) {
-      dep_temp.globs = dep.globs.slice(dep.globs.length - 1);
-    }
     var cssTasksInstance = cssTasks(dep.name);
     if (!enabled.failStyleTask) {
       cssTasksInstance.on('error', function(err) {
@@ -184,7 +182,7 @@ gulp.task('styles', ['wiredep'], function() {
         this.emit('end');
       });
     }
-    merged.add(gulp.src(dep_temp.globs, {base: 'styles'})
+    merged.add(gulp.src(dep.globs, {base: 'styles'})
       .pipe(plumber({errorHandler: onError}))
       .pipe(cssTasksInstance));
   });
@@ -195,7 +193,7 @@ gulp.task('styles', ['wiredep'], function() {
 // ### Scripts
 // `gulp scripts` - Runs JSHint then compiles, combines, and optimizes Bower JS
 // and project JS.
-gulp.task('scripts', ['jshint'], function() {
+gulp.task('scripts', function() {
   var merged = merge();
   manifest.forEachDependency('js', function(dep) {
     merged.add(
@@ -211,6 +209,13 @@ gulp.task('scripts', ['jshint'], function() {
 // ### Fonts
 // `gulp fonts` - Grabs all the fonts and outputs them in a flattened directory
 // structure. See: https://github.com/armed/gulp-flatten
+gulp.task('htc', function() {
+  return gulp.src([path.source + 'htc/**/*'])
+    .pipe(flatten())
+    .pipe(gulp.dest(path.dist + 'htc'))
+    .pipe(browserSync.stream());
+});
+
 gulp.task('fonts', function() {
   return gulp.src(globs.fonts)
     .pipe(flatten())
@@ -225,7 +230,10 @@ gulp.task('images', function() {
     .pipe(imagemin([
       imagemin.jpegtran({progressive: true}),
       imagemin.gifsicle({interlaced: true}),
-      imagemin.svgo({plugins: [{removeUnknownsAndDefaults: false}, {cleanupIDs: false}]})
+      imagemin.svgo({plugins: [
+        {removeUnknownsAndDefaults: false},
+        {cleanupIDs: false}
+      ]})
     ]))
     .pipe(gulp.dest(path.dist + 'images'))
     .pipe(browserSync.stream());
@@ -264,6 +272,7 @@ gulp.task('watch', function() {
   gulp.watch([path.source + 'styles/**/*'], ['styles']);
   gulp.watch([path.source + 'scripts/**/*'], ['jshint', 'scripts']);
   gulp.watch([path.source + 'fonts/**/*'], ['fonts']);
+  gulp.watch([path.source + 'htc/**/*'], ['htc']);
   gulp.watch([path.source + 'images/**/*'], ['images']);
   gulp.watch(['bower.json', 'assets/manifest.json'], ['build']);
 });
@@ -274,7 +283,7 @@ gulp.task('watch', function() {
 gulp.task('build', function(callback) {
   runSequence('styles',
               'scripts',
-              ['fonts', 'images'],
+              ['fonts', 'htc', 'images'],
               callback);
 });
 

@@ -1,26 +1,47 @@
 {
   "dependencies": {
     "main.js": {
+      "bower": ["skel"],
       "files": [
+        "scripts/jquery.scrolly.min.js",
+        "scripts/jquery.onvisible.min.js",
+        "scripts/jquery.dropotron.min.js",
+        "scripts/util.js",
         "scripts/main.js"
       ],
       "main": true
     },
+    "html5shiv.js": {
+      "files": [
+        "scripts/ie/html5shiv.js"
+      ]
+    },
+    "respond.min.js": {
+      "files": [
+        "scripts/ie/respond.min.js"
+      ]
+    },
     "main.css": {
-      "vendor": [
-        "components-font-awesome"
-      ],
+      "bower": ["components-font-awesome"],
       "files": [
         "styles/main.scss"
       ],
       "main": true
+    },
+    "ie8.css": {
+      "files": [
+        "styles/ie8.scss"
+      ]
+    },
+    "fonts": {
+      "files": [
+        "fonts/**/*",
+        "../bower_components/components-font-awesome/fonts/**/*"
+      ]
+
     }
   },
-  "paths": {
-    "source": "assets/",
-    "dist": "dist/"
-  },
   "config": {
-    "devUrl": "http://kiliframework.dev/"
+    "devUrl": "http://helios.dev"
   }
 }
