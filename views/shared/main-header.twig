@@ -2,13 +2,23 @@
   <!-- Inner -->
   <div class="inner">
     <header>
-      <h1><a href="/" id="logo">{{ site.name }}</a></h1>
+      <h1>
+        <a href="/" id="logo">
+          {% if post.show_title_logo %}
+            <img src="{{TimberImage(post.banner_logo).src}}" alt="{{post.header_title}}">
+          {% else %}
+            {{ post.header_title ? post.header_title : site.title }}
+          {% endif %}
+        </a>
+      </h1>
       <hr />
       <p>{{ site.description }}</p>
     </header>
-    <footer>
-      <a href="#banner" class="button circled scrolly">Start</a>
-    </footer>
+    {% if post.show_section_scrolling_button %}
+      <footer>
+        <a href="#{{post.next_section_anchor_id}}" class="button circled scrolly">{{post.button_label}}</a>
+      </footer>
+    {% endif %}
   </div>
   {% include 'shared/navigation.twig' %}
 </div>

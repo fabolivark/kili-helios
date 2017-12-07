@@ -1,0 +1,22 @@
+<div class="wrapper style1">
+
+  <section id="features" class="container special">
+    <header>
+      <h2>{{page_block.title}}</h2>
+      {{page_block.description}}
+    </header>
+    <div class="row">
+      {% for item in page_block.features %}
+        <article class="4u 12u(mobile) special">
+          <a href="{{item.link}}" class="image featured"><img src="{{TimberImage(item.image).src}}" alt="" /></a>
+          <header>
+            <h3><a href="{{item.link}}">{{item.title}}</a></h3>
+          </header>
+          {{item.description}}
+        </article>
+      {% endfor %}
+
+    </div>
+  </section>
+
+</div>

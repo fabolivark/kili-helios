@@ -1,0 +1,18 @@
+<section class="{{page_block.section_anchor_id}}">
+  <div class="reel">
+    {% if page_block.title %}
+      <header style="text-align: center;">
+        <h2>{{page_block.title}}</h2>
+      </header>
+    {% endif %}
+    {% for item in page_block.carousel_posts %}
+      <article>
+        <a href="{{item.link}}" class="image featured"><img src="{{item.thumbnail.src}}" /></a>
+        <header>
+          <h3><a href="{{item.link}}">{{item.title}}</a></h3>
+        </header>
+        {{item.content | excerpt(10)}}
+      </article>
+    {% endfor %}
+  </div>
+</section>

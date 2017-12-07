@@ -1,0 +1,36 @@
+{% extends "layouts/base.twig" %}
+{% block header %}
+  {% include 'shared/single-header.twig' %}
+{% endblock %}
+{% block content %}
+  <!-- Main -->
+  <div class="wrapper style1">
+
+    <div class="container">
+      <div class="row 200%">
+        <div class="4u 12u(mobile)" id="sidebar">
+          <hr class="first" />
+          {{sidebar_primary}}
+        </div>
+        <div class="8u 12u(mobile) important(mobile)" id="content">
+          <article id="main">
+            <div class="image featured"><img src="{{TimberImage(post.thumbnail).src}}" alt="{{TimberImage(post.thumbnail).alt}}" /></div>
+            {{post.content}}
+          </article>
+        </div>
+      </div>
+      <hr />
+      <div class="row">
+        {% for item in related %}
+          <article class="4u 12u(mobile) special">
+            <a href="{{item.link}}" class="image featured"><img src="{{TimberImage(item.thumbnail).src}}" alt="{{TimberImage(item.thumbnail).alt}}" /></a>
+            <header>
+              <h3><a href="{{item.link}}">{{item.title}}</a></h3>
+            </header>
+            {{item.content}}
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
